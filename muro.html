@@ -2,13 +2,19 @@
 
 <head>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
         crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">PickTime</a>
+        <a class="navbar-brand" href="#">Web Luciana</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
             aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,34 +22,17 @@
 
         <div class="collapse navbar-collapse" id="navbarsExample04">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+                </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Muro<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Disabled</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                    <a class="nav-link" href="#">Muro</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-md-0">
-                <input class="form-control" type="text" placeholder="Search">
-            </form>
         </div>
     </nav>
 
-    <h3>Tu muro</h3>
-
-    <div class="container-fluid" data-ng-app="muroApp" data-ng-controller="muroCtrl">
+    <div class="container" data-ng-app="muroApp" data-ng-controller="muroCtrl">
         <!--
             <table>
                 <thead>
@@ -105,91 +94,110 @@
                   </ul>
     </div>
     -->
-        <h2>Tu Muro</h2>
-        <div data-ng-repeat="imagenConComentarios in imagenesConComentarios">
-            {{ imagenConComentarios.id }} - {{ imagenConComentarios.id_usuario }}<br>
-            <a><img src="{{ imagenConComentarios.url }}" alt="Description" height="150" /></a>
-            <button type="button" data-ng-click="editarImagen(imagenConComentarios)">Editar</button>
-            <button type="button" data-ng-click="eliminarImagen(imagenConComentarios)">Eliminar</button>
-            <form ng-submit="guardarComentarioNuevo()">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="usuario" data-ng-model="comentarioImagen.id_usuario">
+
+        <h1>Tu Muro</h1>
+
+        <div class="row mb-5" data-ng-repeat="imagenConComentarios in imagenesConComentarios">
+            <!-- {{ imagenConComentarios.id }} - {{ imagenConComentarios.id_usuario }} -->
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+
+                        <img class="img-fluid mb-4" src="{{ imagenConComentarios.url }}" alt="Description" height="150" />
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" data-ng-click="editarImagen(imagenConComentarios)">Editar</button>
+                            <button type="button" class="btn btn-danger" data-ng-click="eliminarImagen(imagenConComentarios)">Eliminar</button>
+                        </div>
+
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Enviar comentario" data-ng-model="nuevoComentario[imagenConComentarios.id].descripcion"></textarea>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary" data-ng-click="guardarComentarioNuevo(imagenConComentarios.id)">Enviar</button>
+                            <button type="button" class="btn btn-sm btn-default" data-ng-click="cancelarComentarioNuevo()">Cancelar</button>
+                        </form>
+
+                        <hr>
+
+                        <h4>Comentarios</h4>
+                        <div data-ng-repeat="comentario in imagenConComentarios.comentarios">
+                            <!-- {{ comentario.id }} - {{ comentario.id_usuario }}<br> -->
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <p>{{comentario.descripcion}}</p>
+                                    <button class="btn btn-sm btn-primary" type="button" data-ng-click="editarComentario(comentario)">Editar</button>
+                                    <button class="btn btn-sm btn-danger" type="button" data-ng-click="eliminarComentario(comentario)">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <textarea rows="4" cols="50" placeholder="descripcion" data-ng-model="comentarioImagen.descripcion">
-                           </textarea>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="path" data-ng-model="comentarioImagen.path">
-                </div>
-                <input type="submit" id="submit" value="Guardar" />
-          <!--     <button type="button" class="btn btn-success" data-ng-click="guardarComentarioNuevo()">Guardar</button>--> 
-                <button type="button" class="btn btn-default" data-ng-click="cancelarComentarioNuevo()">Cancelar</button>
-            </form>
-            <div data-ng-repeat="comentario in imagenConComentarios.comentarios">
-                {{ comentario.id }} - {{ comentario.id_usuario }}<br>
-                <p>{{comentario.descripcion}}</p>
-                <button type="button" data-ng-click="editar(comentario)">Editar</button>
-                <button type="button" data-ng-click="eliminar(comentario)">Eliminar</button>
             </div>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th><strong>ID</strong></th>
-                    <th><strong>id_usuario</strong></th>
-                    <th><strong>path</strong></th>
-                    <th><strong>url</strong></th>
+    </div>
 
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr data-ng-repeat="imagenConComentarios in imagenesConComentarios">
-                    <td>{{ imagenConComentarios.id }}</td>
-                    <td>{{ imagenConComentarios.id_usuario }}</td>
-                    <td>{{ imagenConComentarios.path }}</td>
-                    <td><img src="{{ imagenConComentarios.url }}" alt="Description" height="150" /></td>
-                    <td>{{ imagenConComentarios.id }}</td>
-                    <td>
-                        <button type="button" data-ng-click="editar()">Editar</button>
-                        <button type="button" data-ng-click="eliminar()">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
+    <!-- <table>
+        <thead>
+            <tr>
+                <th><strong>ID</strong></th>
+                <th><strong>id_usuario</strong></th>
+                <th><strong>path</strong></th>
+                <th><strong>url</strong></th>
 
-            <div class="container">
-                <div class="col-lg-6 text-right">
-                    <h2>Nueva Imagen</h2>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="usuario" data-ng-model="nuevaImagen.id_usuario">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="muro" data-ng-model="nuevaImagen.id_muro">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="path" data-ng-model="nuevaImagen.path">
-                    </div>
-                    <div class="form-group">
-                        <span class="input-group-addon">
-                            <img data-ng-src="{{nuevaImagen.url || 'https://s3.amazonaws.com/whisperinvest-images/default.png' }}"
-                                height="150"></span>
-                        <input type="text" class="form-control" placeholder="URL de la foto" data-ng-model="nuevaImagen.url">
-                    </div>
-                    <button type="button" class="btn btn-success" data-ng-click="guardarImagenNueva()">Guardar</button>
-                    <button type="button" class="btn btn-default" data-ng-click="cancelarImagenNueva()">Cancelar</button>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="imagenConComentarios in imagenesConComentarios">
+                <td>{{ imagenConComentarios.id }}</td>
+                <td>{{ imagenConComentarios.id_usuario }}</td>
+                <td>{{ imagenConComentarios.path }}</td>
+                <td><img src="{{ imagenConComentarios.url }}" alt="Description" height="150" /></td>
+                <td>{{ imagenConComentarios.id }}</td>
+                <td>
+                    <button type="button" data-ng-click="editar()">Editar</button>
+                    <button type="button" data-ng-click="eliminar()">Eliminar</button>
+                </td>
+            </tr>
+        </tbody>
+
+    </table> -->
+
+    <div class="container" data-ng-app="muroApp" data-ng-controller="muroCtrl">
+        <div class="row">
+            <div class="col-sm-6">
+                <h1>Nueva Imagen</h1>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="usuario" data-ng-model="nuevaImagen.id_usuario">
                 </div>
-
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="muro" data-ng-model="nuevaImagen.id_muro">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="path" data-ng-model="nuevaImagen.path">
+                </div>
+                <div class="form-group">
+                    <!-- <span class="input-group-addon">
+                        <img data-ng-src="{{nuevaImagen.url || 'https://s3.amazonaws.com/whisperinvest-images/default.png' }}"
+                            height="150"></span> -->
+                    <input type="text" class="form-control" placeholder="URL de la foto" data-ng-model="nuevaImagen.url">
+                </div>
+                <button type="button" class="btn btn-primary" data-ng-click="guardarImagenNueva()">Guardar</button>
+                <button type="button" class="btn btn-default" data-ng-click="cancelarImagenNueva()">Cancelar</button>
             </div>
+        </div>
+
+    </div>
 
 
-            <script src="js/muro.js"></script>
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
+    <script src="js/muro.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -37,11 +37,11 @@ angular.module('muroApp', []).controller('muroCtrl', function ($scope, $http, $t
     id_imagen: ''
   };
   $scope.nuevoComentario = {
-    id_usuario: '',
+    /* id_usuario: '',
     id_muro: '',
     descripcion: '',
     path_comentario: '',
-    id_imagen: ''
+    id_imagen: '' */
   };
   $scope.unComentarioVacio = {
    id_usuario: '',
@@ -64,11 +64,13 @@ angular.module('muroApp', []).controller('muroCtrl', function ($scope, $http, $t
     })
   }
 
-
-  $scope.guardarComentarioNuevo = function () {
-debugger
-    if ($scope.unComentarioEditado === $scope.unComentarioVacio) {
-      $http.post('api/comentarios '+ $scope.comentarioImagen.id, $scope.comentarioImagen)
+  $scope.guardarComentarioNuevo = function (id) {
+    $scope.nuevoComentario[id].id = id;
+    $scope.nuevoComentario[id].id_usuario = '4'; // CAMBIAR
+    $http.post('api/comentarios/' + id, $scope.nuevoComentario[id])
+    /* if ($scope.unComentarioEditado === $scope.unComentarioVacio) {
+      debugger
+      $http.post('api/comentarios/'+ $scope.comentarioImagen.id + '/' + $scope.comentarioImagen)
         .then(function (response) {
           $timeout(function () {
             $scope.cancelarComentarioNuevo();
@@ -94,8 +96,7 @@ debugger
           alert('Error guardando comentarios editado');
         }, 0);
       });
-    }
-
+    } */
   }
   $scope.cancelarComentarioNuevo = function () {
     $scope.nuevoComentario = {
@@ -109,7 +110,6 @@ debugger
 
 
   $scope.editarComentario = function (Comentario) {
-    debugger
     $scope.nuevoComentario = Comentario;
     $scope.unComentarioEditado = $scope.nuevoComentario;
 
